@@ -48,7 +48,6 @@ public class PruebaCallCenter {
 		final String CODIGO_PAIS = "5ABD4";
 		final String CODIGO_AREA = "11";
 		final String NRO_CELULAR = "61234293";
-		//final String NUMERO_DE_CELULAR_ESPERADO = "+"+CODIGO_PAIS+CODIGO_AREA+NRO_CELULAR;
 		final String NRO_CELULAR_YA_ARMADO;
 		Contacto unContacto;
 		
@@ -57,9 +56,9 @@ public class PruebaCallCenter {
 		NRO_CELULAR_YA_ARMADO = Contacto.crearSuNumeroCelular(CODIGO_PAIS,CODIGO_AREA,NRO_CELULAR);
 		unContacto.setNumeroCelular(NRO_CELULAR_YA_ARMADO);
 		
-		//Assert | Afirmar o validar
-		//assertEquals(NUMERO_DE_CELULAR_ESPERADO, unContacto.getNumeroCelular());
 	}
+	
+	
 	
 	
 	@Test
@@ -136,7 +135,7 @@ public class PruebaCallCenter {
 		
 		final String CODIGO_PAIS = "54";
 		final String CODIGO_AREA = "11";
-		final String NRO_CELULAR = "61234293";
+		final String NRO_CELULAR = "6124293";
 		
 		final String CELULAR = Contacto.crearSuNumeroCelular(CODIGO_PAIS, CODIGO_AREA, NRO_CELULAR);
 		final String MAIL = "jesibel@mail.com.ar";
@@ -157,6 +156,75 @@ public class PruebaCallCenter {
 		assertTrue(unaEmpresa.agregarUnContacto(unContacto));
 		assertEquals(CANTIDAD_DE_CONTACTO_ESPERADA, unaEmpresa.darLaCantidadDeContactosYaRegistrados());
 	}
+	//****************************************************************
+	
+	@Test
+	public void queNoSePuedaRegistrarUnContactoConCelularErroneoEnLaListaDeContactosDeEmpresa(){
+		
+		final String NOMBRE_Y_APELLIDO = "Jesi Belen Salva";
+		final String CODIGO_PAIS = "5A4";
+		final String CODIGO_AREA = "11";
+		final String NRO_CELULAR = "612P34293";
+		
+		final String CELULAR; 
+		final String MAIL = "jesibel@mail.com.ar";
+		final String DIRECCION = "Av. Siempre viva 123";
+		/*final Integer CODIGO_POSTAL = 1000;
+		final String LOCALIDAD = "CABA";
+		final Provincia PROVINCIA = Provincia.CABA;*/
+		
+		Contacto unContacto;
+		Empresa unaEmpresa;
+		
+		final Integer CANTIDAD_DE_CONTACTO_ESPERADA = 1;
+		
+		//Ejecucion
+		unaEmpresa = new Empresa("Oeste Cable Color");
+		try {
+			CELULAR = Contacto.crearSuNumeroCelular(CODIGO_PAIS, CODIGO_AREA, NRO_CELULAR);
+			unContacto = new Contacto(NOMBRE_Y_APELLIDO,CELULAR,MAIL,DIRECCION);
+		} catch (DatosIncorrectos e) {
+			e.printStackTrace();
+			
+		}catch(NumberFormatException e) {
+			System.err.println("El formato del celular no es correcto.");
+		}
+		
+	}
+	//****************************************************************
+	@Test
+	public void queNoSePuedaRegistrarUnContactoConEmailInvalidoEnLaListaDeContactosDeEmpresa() {
+		final String NOMBRE_Y_APELLIDO = "Jesi Belen Salva";
+		final String CODIGO_PAIS = "54";
+		final String CODIGO_AREA = "11";
+		final String NRO_CELULAR = "61234293";
+		
+		final String CELULAR = Contacto.crearSuNumeroCelular(CODIGO_PAIS, CODIGO_AREA, NRO_CELULAR);
+		final String MAIL = "belenmailcomar";
+		final String DIRECCION = "Av. Siempre viva 123";
+		
+		final Integer CANTIDAD_DE_CONTACTO_ESPERADA = 0;
+
+		
+		Contacto unContacto;
+		Empresa unaEmpresa;
+		
+		//Ejecucion
+		unaEmpresa = new Empresa("Oeste Cable Color");
+		
+		try {
+			unContacto = new Contacto(NOMBRE_Y_APELLIDO,CELULAR,MAIL,DIRECCION);
+			unaEmpresa.agregarUnContacto(unContacto);
+		} catch (DatosIncorrectos e) {
+			System.err.println("El mail fue inválido, no tiene un arroba o no tiene punto");
+		}
+		
+		//Validacion
+		assertEquals(CANTIDAD_DE_CONTACTO_ESPERADA, unaEmpresa.darLaCantidadDeContactosYaRegistrados());
+		
+		
+	}
+
 	
 	@Test
 	public void queSePuedaBuscarUnCandidatoQueNoSeaClienteYDeseaSerLlamadoYQueElCodigoPostalDeEsteExistaEnLaZonaDeCobertura() {
@@ -359,8 +427,8 @@ public class PruebaCallCenter {
 												"\n Llamadas: " + Arrays.toString(candidato.getLlamadas());
 
 		// Validación
-		assertEquals(informacionEsperadaDelCandidato, candidato.toString()); // Me salta error cuando compara candidato
-																				// solo
+		assertEquals(informacionEsperadaDelCandidato, candidato.toString()); 
+																				
 	}
 
 	

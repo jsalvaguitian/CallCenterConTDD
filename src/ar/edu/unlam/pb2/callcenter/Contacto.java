@@ -17,12 +17,14 @@ public class Contacto {
 	private Llamada[] llamadas;
 	private final Integer CANT_MAX_LLAMADAS  = 100;
 
-
+//**************************************
 	public Contacto() {
 		this.esCliente = false;
 		this.deseaSerLlamado = true;
+		this.llamadas = new Llamada[this.CANT_MAX_LLAMADAS];
 	}
-
+	
+//**************************************
 	public Contacto(String nombreYApellido, String celular, String mail, String direccion, Integer codigoPostal,
 			String localidad, Provincia provincia) {
 		
@@ -39,7 +41,24 @@ public class Contacto {
 		
 		this.llamadas = new Llamada[this.CANT_MAX_LLAMADAS];
 	}
-
+	
+//**************************************
+	//Un constructor que tira EXCEPCION
+	public Contacto(String nombreYApellido, String celular, String mail, String direccion)throws DatosIncorrectos {
+		
+		this.nombreYApellido = nombreYApellido;
+		this.numeroCelular = celular;
+		this.mail = mail;
+		if(!this.esMailValido(mail))
+			throw new DatosIncorrectos();
+		this.direccion = direccion;
+		
+		this.esCliente = false;
+		this.deseaSerLlamado = true;	
+		this.llamadas = new Llamada[this.CANT_MAX_LLAMADAS];
+		
+	}
+//**************************************	
 	public static String crearSuNumeroCelular(String codigoPais, String codigoArea, String nroCelular) {
 		String celular = "";
 		Integer codPais = Integer.parseInt(codigoPais);	
